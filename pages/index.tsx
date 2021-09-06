@@ -7,15 +7,15 @@ import { getID } from '../util/id';
 import { TranslationService as t } from '../util/translation';
 
 const Page: React.FC<{ title: string, onClick?: () => unknown }> = ({ title, children, onClick }) => {
-  let cols = 2;
+  let cols = 'grid-cols-2';
 
   const screenSize = ScreenSize();
-  if (screenSize.width < 650) cols = 1;
+  if (screenSize.width < 650) cols = 'grid-cols-1';
 
   return (
     <div className="flex flex-col justify-start items-start my-16" >
       <h1 className="text-6xl mb-8 cursor-pointer" onClick={onClick} >{title}</h1>
-      <div className={`grid grid-cols-${cols} max-h-full overflow-y-auto overflow-x-hidden`}>
+      <div className={`grid ${cols} max-h-full overflow-y-auto overflow-x-hidden`}>
         {children}
       </div>
     </div>
