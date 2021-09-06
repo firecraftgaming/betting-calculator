@@ -16,9 +16,12 @@ const translations: Translations = {
   sv: {
     group: {
       title: 'Grupper',
+      name: 'Gruppnamn',
     },
     player: {
       title: 'Spelare',
+      name: 'Spelarnamn',
+
       betting: {
         on: 'Bettar På',
         amount: 'Bettar',
@@ -31,9 +34,12 @@ const translations: Translations = {
   en: {
     group: {
       title: 'Groups',
+      name: 'Group name',
     },
     player: {
       title: 'Players',
+      name: 'Player name',
+
       betting: {
         on: 'Betting on',
         amount: 'Betting',
@@ -47,6 +53,11 @@ const translations: Translations = {
 
 export class TranslationService {
   private static getLanguage(): Language {
+    if (typeof navigator === 'undefined') return languages[0];
+
+    const osLanguage = navigator.language.split('-')[0].toLowerCase() as Language;
+    if (languages.includes(osLanguage)) return osLanguage;
+
     return languages[0];
   }
 

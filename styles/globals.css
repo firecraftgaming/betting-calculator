@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 :root {
+  font-size: 14px;
+
   --background: #151A21;
 
   --gray-600: #323D4D;
+
+  --button: rgba(255, 255, 255, 0.05);
+  --button-hover: rgba(255, 255, 255, 0.04);
 }
 
 html,

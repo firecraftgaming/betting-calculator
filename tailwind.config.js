@@ -6,7 +6,11 @@ module.exports = {
       colors: {
         gray: {
           '600': 'var(--gray-600)'
-        }
+        },
+        button: {
+          DEFAULT: 'var(--button)',
+          'hover': 'var(--button-hover)',
+        },
       },
       gridTemplateColumns: {
         'main': 'minmax(0, 1fr) auto minmax(0, 1fr)',

@@ -33,10 +33,18 @@ function formatNumber(number: number) {
   if (isNaN(number)) return '';
   return number.toString();
 }
-function calculateWinning() {
-  
+function calculateWinning(players: Map<number, PlayerData>, player: PlayerData) {
+  if (player.betting < 1) return 0;
+  const p = Array.from(players.values());
+
+  const totalBetting = p.reduce((acc, cur) => acc + cur.betting, 0);
+  const totalBettingGroup = p.filter(p => p.group === player.group).reduce((acc, cur) => acc + cur.betting, 0);
+
+  const winningFraction = player.betting / totalBettingGroup;
+  const winning = Math.floor(totalBetting * winningFraction);
+  return winning;
 }
-export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<number, PlayerData>, player: PlayerData, update: (player: PlayerData) => void }> = ({ groups, player, update }) => {
+export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<number, PlayerData>, player: PlayerData, update: (player: PlayerData) => void }> = ({ groups, players, player, update }) => {
   const group = groups.get(player.group) ?? invalidGroup;
 
   return (
@@ -62,7 +70,7 @@ export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<num
           type="number"
           onChange={(e) => update({ ...player, betting: parseInt(e.target.value) })}
         /></div>
-        <div>{t.get('player.winning.amount')} </div>
+        <div>{t.get('player.winning.amount')} {calculateWinning(players, player)}</div>
       </div>
     </Box>
   );
