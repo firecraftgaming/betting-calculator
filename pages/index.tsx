@@ -13,9 +13,9 @@ const Page: React.FC<{ title: string, onClick?: () => unknown }> = ({ title, chi
   if (screenSize.width < 650) cols = 'grid-cols-1';
 
   return (
-    <div className="flex flex-col justify-start items-start my-16" >
+    <div className="flex flex-col justify-start items-start my-16 h-full" >
       <h1 className="text-6xl mb-8 cursor-pointer" onClick={onClick} >{title}</h1>
-      <div className={`grid ${cols} max-h-full overflow-y-auto overflow-x-hidden`}>
+      <div className={`grid ${cols} max-h-full overflow-y-auto overflow-x-hidden mb-20`}>
         {children}
       </div>
     </div>
@@ -29,8 +29,8 @@ interface Context {
   groups: GroupStore;
   players: PlayerStore;
 
-  updateGroup(group: GroupData): void;
-  updatePlayer(player: PlayerData): void;
+  updateGroup(group: GroupData, remove?: boolean): void;
+  updatePlayer(player: PlayerData, remove?: boolean): void;
 }
 
 function getGroup() {
@@ -185,14 +185,28 @@ const Home: NextPage = () => {
     }
   }, []);
 
-  function updatePlayer(player: PlayerData) {
+  function updatePlayer(player: PlayerData, remove = false) {
+    if (remove) {
+      const newPlayers = new Map(players);
+      newPlayers.delete(player.id);
+      setPlayers(newPlayers);
+      return;
+    }
+
     const newPlayers = new Map(players);
     player.betting = Math.max(player.betting, 0);
     newPlayers.set(player.id, player);
     setPlayers(newPlayers);
   }
 
-  function updateGroup(group: GroupData) {
+  function updateGroup(group: GroupData, remove = false) {
+    if (remove) {
+      const newGroups = new Map(groups);
+      newGroups.delete(group.id);
+      setGroups(newGroups);
+      return;
+    }
+
     const newGroups = new Map(groups);
     newGroups.set(group.id, group);
     setGroups(newGroups);

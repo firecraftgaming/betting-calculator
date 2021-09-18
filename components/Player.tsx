@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box } from "./Box";
 import { GroupData, invalidGroup } from "./Group";
 import { TranslationService as t } from '../util/translation';
+import { Delete } from "./Delete";
 
 const GroupChanger: React.FC<{ group: GroupData, onClick?: () => unknown }> = ({ group, onClick }) => {
   return (
@@ -44,8 +45,15 @@ function calculateWinning(players: Map<number, PlayerData>, player: PlayerData) 
   const winning = Math.floor(totalBetting * winningFraction);
   return winning;
 }
-export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<number, PlayerData>, player: PlayerData, update: (player: PlayerData) => void }> = ({ groups, players, player, update }) => {
-  const group = groups.get(player.group) ?? invalidGroup;
+export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<number, PlayerData>, player: PlayerData, update: (player: PlayerData, remove?: boolean) => void }> = ({ groups, players, player, update }) => {
+  let group = groups.get(player.group) ?? invalidGroup;
+  if (group === invalidGroup) {
+    const next = getNext(groups, player.group);
+    if (next >= 0) {
+      group = groups.get(next) ?? invalidGroup;
+      update({ ...player, group: next });
+    }
+  }
 
   return (
     <Box color={group.color}>
@@ -72,6 +80,13 @@ export const Player: React.FC<{ groups: Map<number, GroupData>, players: Map<num
         /></div>
         <div>{t.get('player.winning.amount')} {calculateWinning(players, player)}</div>
       </div>
+
+      <button
+        className="flex justify-center items-center absolute bottom-0 right-0 w-10 h-10 rounded-lg m-3 hover:bg-red-hover"
+        onClick={() => update(player, true)}
+      >
+        <Delete />
+      </button>
     </Box>
   );
 }

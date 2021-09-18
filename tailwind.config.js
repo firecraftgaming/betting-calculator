@@ -7,6 +7,9 @@ module.exports = {
         gray: {
           '600': 'var(--gray-600)'
         },
+        red: {
+          hover: '#542222',
+        },
         button: {
           DEFAULT: 'var(--button)',
           'hover': 'var(--button-hover)',

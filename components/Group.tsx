@@ -1,5 +1,6 @@
 import React from "react";
 import { Box } from "./Box";
+import { Delete } from "./Delete";
 
 export const invalidGroup: GroupData = {
   id: -1,
@@ -13,7 +14,7 @@ export interface GroupData {
   color: string;
 }
 
-export const Group: React.FC<{ group: GroupData, update: (group: GroupData) => void }> = ({ group, update }) => {
+export const Group: React.FC<{ group: GroupData, update: (group: GroupData, remove?: boolean) => void }> = ({ group, update }) => {
   function openColorPicker() {
     const elem = document.createElement("input");
     elem.type = "color";
@@ -47,6 +48,12 @@ export const Group: React.FC<{ group: GroupData, update: (group: GroupData) => v
           backgroundColor: group.color,
         }}
       />
+      <button
+        className="flex justify-center items-center absolute bottom-0 right-0 w-10 h-10 rounded-lg m-3 hover:bg-red-hover"
+        onClick={() => update(group, true)}
+      >
+        <Delete />
+      </button>
     </Box>
   );
 }
